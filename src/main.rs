@@ -1,4 +1,5 @@
 use rand::{prelude::SliceRandom, Rng};
+use std::io::Write;
 
 fn mod_pow(
     mut base: primitive_types::U512,
@@ -96,8 +97,16 @@ fn generate_n_bit_number(bits: u32) -> primitive_types::U512 {
 }
 
 fn main() {
+    print!("Bytes amount: ");
+    std::io::stdout().flush().unwrap();
+
+    let mut line = String::new();
+    std::io::stdin().read_line(&mut line).unwrap();
+
+    let bytes_amount = line.trim().parse::<u32>().unwrap();
+
     loop {
-        let prime_candidate = generate_n_bit_number(256);
+        let prime_candidate = generate_n_bit_number(bytes_amount);
 
         if low_level_prime(prime_candidate) && high_level_prime(prime_candidate, 128) {
             println!("{}", prime_candidate);
